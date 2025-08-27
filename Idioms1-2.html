@@ -1,0 +1,2363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aria's Idiom Mastery - Levels 1 & 2</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #667eea;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .header h2 {
+            color: #764ba2;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 15px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            display: block;
+        }
+
+        .level-section {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .level-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid;
+        }
+
+        .level-title {
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        .level-badge {
+            padding: 8px 16px;
+            border-radius: 20px;
+            color: white;
+            font-weight: bold;
+        }
+
+        /* Level Colors */
+        .level-1 .level-header { border-bottom-color: #4CAF50; }
+        .level-1 .level-title { color: #4CAF50; }
+        .level-1 .level-badge { background: #4CAF50; }
+
+        .level-2 .level-header { border-bottom-color: #2196F3; }
+        .level-2 .level-title { color: #2196F3; }
+        .level-2 .level-badge { background: #2196F3; }
+
+        .lessons-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+        }
+
+        .lesson-card {
+            background: #f8f9ff;
+            border-radius: 15px;
+            padding: 20px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            border-left: 5px solid;
+        }
+
+        .lesson-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .level-1 .lesson-card { border-left-color: #4CAF50; }
+        .level-2 .lesson-card { border-left-color: #2196F3; }
+
+        .lesson-number {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 10px;
+        }
+
+        .level-1 .lesson-number { background: #4CAF50; }
+        .level-2 .lesson-number { background: #2196F3; }
+
+        .lesson-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .lesson-preview {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .lesson-duration {
+            color: #888;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+
+        .lesson-page {
+            display: none;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .lesson-page.active {
+            display: block;
+        }
+
+        .lesson-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .lesson-info h2 {
+            color: #667eea;
+            font-size: 2rem;
+            margin-bottom: 5px;
+        }
+
+        .lesson-info p {
+            color: #764ba2;
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+
+        .timer-section {
+            text-align: center;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
+        .timer-display {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .timer-controls {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .timer-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 2px solid white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .timer-btn:hover {
+            background: white;
+            color: #667eea;
+        }
+
+        .back-btn {
+            background: #764ba2;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: #5a3a7a;
+            transform: translateY(-2px);
+        }
+
+        .lesson-section {
+            margin-bottom: 30px;
+            padding: 25px;
+            border-radius: 15px;
+            border-left: 5px solid #667eea;
+        }
+
+        .lesson-section:nth-child(even) {
+            background: #f5f7ff;
+        }
+
+        .lesson-section:nth-child(odd) {
+            background: #faf5ff;
+            border-left-color: #764ba2;
+        }
+
+        .section-title {
+            color: #667eea;
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .lesson-section:nth-child(odd) .section-title {
+            color: #764ba2;
+        }
+
+        .idiom-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            border-left: 4px solid #667eea;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .idiom-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .idiom-meaning {
+            color: #666;
+            margin-bottom: 10px;
+            font-style: italic;
+        }
+
+        .idiom-example {
+            background: #f0f5ff;
+            padding: 10px;
+            border-radius: 8px;
+            border-left: 3px solid #667eea;
+        }
+
+        .reading-activity {
+            background: #f8faff;
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 4px solid #764ba2;
+            margin-bottom: 15px;
+        }
+
+        .reading-text {
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .highlighted-idiom {
+            background: #fff3cd;
+            padding: 2px 4px;
+            border-radius: 4px;
+            font-weight: bold;
+            color: #856404;
+        }
+
+        .activity-box {
+            background: #e8f5e8;
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 4px solid #4CAF50;
+            margin-bottom: 15px;
+        }
+
+        .activity-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .activity-list li {
+            background: white;
+            padding: 12px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            border-left: 3px solid #4CAF50;
+            position: relative;
+        }
+
+        .activity-list li::before {
+            content: "✓";
+            color: #4CAF50;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+
+        .sentence-practice {
+            background: #fff0f5;
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 4px solid #E91E63;
+        }
+
+        .practice-item {
+            background: white;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .practice-prompt {
+            font-weight: bold;
+            color: #E91E63;
+            margin-bottom: 5px;
+        }
+
+        .footer {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .footer-info {
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .website-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .website-link:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .lessons-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                padding: 15px;
+            }
+
+            .lesson-header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎭 Aria's Idiom Mastery</h1>
+            <h2>Levels 1 & 2 Complete Curriculum</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-number">30</span>
+                    <span>Complete Lessons</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">150</span>
+                    <span>Idioms & Expressions</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">2</span>
+                    <span>Progressive Levels</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">25</span>
+                    <span>Minutes Each</span>
+                </div>
+            </div>
+            <p>From Basic to Elementary Level • Interactive Learning • Real-World Applications</p>
+        </div>
+
+        <div id="curriculumGrid">
+            <!-- Level 1: Basic Idioms -->
+            <div class="level-section level-1">
+                <div class="level-header">
+                    <div class="level-title">Level 1: Basic Idioms</div>
+                    <div class="level-badge">Lessons 1-15</div>
+                </div>
+                <div class="lessons-grid" id="level1Lessons">
+                    <!-- Level 1 lessons will be generated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Level 2: Common Expressions -->
+            <div class="level-section level-2">
+                <div class="level-header">
+                    <div class="level-title">Level 2: Common Expressions</div>
+                    <div class="level-badge">Lessons 16-30</div>
+                </div>
+                <div class="lessons-grid" id="level2Lessons">
+                    <!-- Level 2 lessons will be generated by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <div class="lesson-page" id="lessonPage">
+            <!-- Lesson content will be generated by JavaScript -->
+        </div>
+
+        <div class="footer">
+            <div class="footer-info">Made by Aria • Teaching since 2014</div>
+            <a href="https://ariasensei.github.io/teacheraria/" class="website-link" target="_blank">
+                🌐 Visit Website: ariasensei.github.io/teacheraria/
+            </a>
+        </div>
+    </div>
+
+    <script>
+        const lessons = [
+            // LEVEL 1: BASIC IDIOMS (Lessons 1-15)
+            {
+                number: 1,
+                level: 1,
+                title: "Basic Daily Life Idioms",
+                idioms: [
+                    {
+                        idiom: "Break a leg",
+                        meaning: "Good luck (especially before a performance)",
+                        example: "You have your piano recital tonight? Break a leg!"
+                    },
+                    {
+                        idiom: "Piece of cake",
+                        meaning: "Something very easy to do",
+                        example: "Don't worry about the math test - it's a piece of cake."
+                    },
+                    {
+                        idiom: "It's raining cats and dogs",
+                        meaning: "It's raining very heavily",
+                        example: "We can't go to the park now - it's raining cats and dogs!"
+                    },
+                    {
+                        idiom: "Time flies",
+                        meaning: "Time passes quickly",
+                        example: "I can't believe it's already December. Time flies!"
+                    },
+                    {
+                        idiom: "Sleep tight",
+                        meaning: "Sleep well (said when saying goodnight)",
+                        example: "Good night, honey. Sleep tight!"
+                    }
+                ],
+                readingActivity: {
+                    title: "Sarah's Busy Day",
+                    text: "Sarah woke up late for her job interview. 'Oh no!' she thought, 'I hope this interview isn't too difficult.' Her mom called out, 'Don't worry, dear, it will be a <span class='highlighted-idiom'>piece of cake</span>!' As Sarah rushed to get ready, she realized <span class='highlighted-idiom'>time flies</span> when you're in a hurry. Before leaving, her mom said, '<span class='highlighted-idiom'>Break a leg</span> at your interview!' Just as Sarah stepped outside, it started to rain heavily. 'Great,' she sighed, 'it's <span class='highlighted-idiom'>raining cats and dogs</span>.' That evening, after a successful interview, Sarah was exhausted. Her mom tucked her in and said, '<span class='highlighted-idiom'>Sleep tight</span>, my dear.'"
+                },
+                activities: [
+                    "Match each idiom with its correct meaning",
+                    "Use each idiom in a conversation with a partner",
+                    "Create a short story using at least 3 of these idioms",
+                    "Practice saying these idioms with correct pronunciation"
+                ],
+                sentencePractice: [
+                    {
+                        prompt: "Use 'piece of cake' to describe something easy:",
+                        example: "Learning to ride a bike was _____ for my little brother."
+                    },
+                    {
+                        prompt: "Use 'time flies' to talk about how quickly something passed:",
+                        example: "We had so much fun at the party that _____."
+                    },
+                    {
+                        prompt: "Use 'break a leg' to wish someone good luck:",
+                        example: "You have your driving test tomorrow? _____!"
+                    }
+                ]
+            },
+            {
+                number: 2,
+                level: 1,
+                title: "Food and Eating Idioms",
+                idioms: [
+                    {
+                        idiom: "The apple of my eye",
+                        meaning: "Someone very precious to you",
+                        example: "My daughter is the apple of my eye."
+                    },
+                    {
+                        idiom: "Spill the beans",
+                        meaning: "Tell a secret",
+                        example: "Come on, spill the beans! What did he say?"
+                    },
+                    {
+                        idiom: "Cry over spilled milk",
+                        meaning: "Worry about something that already happened and can't be changed",
+                        example: "You failed the test, but don't cry over spilled milk. Study harder next time."
+                    },
+                    {
+                        idiom: "A couch potato",
+                        meaning: "Someone who watches TV all day and doesn't exercise",
+                        example: "Ever since he retired, Dad has become a real couch potato."
+                    },
+                    {
+                        idiom: "Bring home the bacon",
+                        meaning: "Earn money for the family",
+                        example: "Both parents work hard to bring home the bacon."
+                    }
+                ],
+                readingActivity: {
+                    title: "The Johnson Family",
+                    text: "Mr. Johnson works two jobs to <span class='highlighted-idiom'>bring home the bacon</span> for his family. His wife often jokes that he's <span class='highlighted-idiom'>the apple of her eye</span> because he works so hard. Their teenage son Tommy used to be very active, but lately he's become <span class='highlighted-idiom'>a couch potato</span>, spending all day watching TV. Yesterday, Tommy accidentally broke his mom's favorite vase. His sister told him, 'Don't <span class='highlighted-idiom'>cry over spilled milk</span> - just tell Mom the truth.' When their parents came home, Tommy's sister couldn't keep the secret and decided to <span class='highlighted-idiom'>spill the beans</span> about what happened."
+                },
+                activities: [
+                    "Draw pictures to represent each food idiom",
+                    "Role-play family conversations using these idioms",
+                    "Find the food words in each idiom and discuss why they're used this way",
+                    "Create your own food idiom and explain what it means"
+                ],
+                sentencePractice: [
+                    {
+                        prompt: "Use 'the apple of my eye' to describe someone special:",
+                        example: "My grandmother always said I was _____."
+                    },
+                    {
+                        prompt: "Use 'spill the beans' when someone tells a secret:",
+                        example: "I promised not to tell, but I accidentally _____."
+                    },
+                    {
+                        prompt: "Use 'couch potato' to describe someone lazy:",
+                        example: "My brother is such _____ - he never leaves the house!"
+                    }
+                ]
+            },
+            {
+                number: 3,
+                level: 1,
+                title: "Animal Idioms",
+                idioms: [
+                    {
+                        idiom: "Hold your horses",
+                        meaning: "Wait, slow down, be patient",
+                        example: "Hold your horses! We need to think about this carefully."
+                    },
+                    {
+                        idiom: "Let the cat out of the bag",
+                        meaning: "Reveal a secret accidentally",
+                        example: "I wasn't supposed to tell you about the surprise party, but I let the cat out of the bag."
+                    },
+                    {
+                        idiom: "Kill two birds with one stone",
+                        meaning: "Accomplish two things at once",
+                        example: "I'll visit the library and the post office - kill two birds with one stone."
+                    },
+                    {
+                        idiom: "When pigs fly",
+                        meaning: "Never, something impossible",
+                        example: "He'll clean his room when pigs fly!"
+                    },
+                    {
+                        idiom: "The early bird catches the worm",
+                        meaning: "People who wake up early or arrive first get the best opportunities",
+                        example: "I always get to the store early for sales. The early bird catches the worm!"
+                    }
+                ],
+                readingActivity: {
+                    title: "Planning the School Fair",
+                    text: "The students were excited about planning the school fair. 'We need to start planning now,' said Maria. '<span class='highlighted-idiom'>The early bird catches the worm</span>, and we want the best booths!' Tom was rushing with ideas, but the teacher said, '<span class='highlighted-idiom'>Hold your horses</span>! Let's organize our thoughts first.' Sarah suggested they could sell tickets and advertise at the same time to <span class='highlighted-idiom'>kill two birds with one stone</span>. When asked if the principal would let them have a dunking booth, Jake laughed and said, 'He'll agree to that <span class='highlighted-idiom'>when pigs fly</span>!' Unfortunately, someone accidentally <span class='highlighted-idiom'>let the cat out of the bag</span> about the surprise guest speaker they had planned."
+                },
+                activities: [
+                    "Act out each animal idiom with gestures and sounds",
+                    "Discuss why these animals are used in these expressions",
+                    "Create comic strips showing the literal vs. figurative meaning",
+                    "Play charades using only these animal idioms"
+                ],
+                sentencePractice: [
+                    {
+                        prompt: "Use 'hold your horses' to tell someone to wait:",
+                        example: "_____! We haven't finished discussing this yet."
+                    },
+                    {
+                        prompt: "Use 'kill two birds with one stone' for doing two things at once:",
+                        example: "I can _____ by studying at the coffee shop and meeting my friend there."
+                    },
+                    {
+                        prompt: "Use 'when pigs fly' to say something will never happen:",
+                        example: "My little brother will eat vegetables _____."
+                    }
+                ]
+            },
+            {
+                number: 4,
+                level: 1,
+                title: "Weather and Nature Idioms",
+                idioms: [
+                    {
+                        idiom: "Under the weather",
+                        meaning: "Feeling sick or unwell",
+                        example: "I'm feeling a bit under the weather today, so I'll stay home."
+                    },
+                    {
+                        idiom: "Every cloud has a silver lining",
+                        meaning: "There's something good in every bad situation",
+                        example: "I lost my job, but every cloud has a silver lining - now I can go back to school."
+                    },
+                    {
+                        idiom: "Save it for a rainy day",
+                        meaning: "Save money for when you need it in the future",
+                        example: "I'm not spending all my birthday money. I'll save it for a rainy day."
+                    },
+                    {
+                        idiom: "Once in a blue moon",
+                        meaning: "Very rarely, almost never",
+                        example: "My grandfather only visits us once in a blue moon."
+                    },
+                    {
+                        idiom: "Come rain or shine",
+                        meaning: "No matter what happens, in any weather or situation",
+                        example: "I walk my dog every morning, come rain or shine."
+                    }
+                ],
+                readingActivity: {
+                    title: "Emma's Garden",
+                    text: "Emma loves gardening and works in her garden <span class='highlighted-idiom'>come rain or shine</span>. Last week, she was feeling <span class='highlighted-idiom'>under the weather</span> with a cold, but she still checked on her plants. Her neighbor only helps with gardening <span class='highlighted-idiom'>once in a blue moon</span>, so Emma usually works alone. When a storm destroyed some of her flowers, Emma's mother reminded her that <span class='highlighted-idiom'>every cloud has a silver lining</span> - now she could plant new varieties. Emma had been saving money from selling vegetables to <span class='highlighted-idiom'>save it for a rainy day</span>, and now she could use it to buy new seeds."
+                },
+                activities: [
+                    "Connect each weather idiom to real weather experiences",
+                    "Create weather reports using these idioms",
+                    "Discuss how weather affects our moods and use appropriate idioms",
+                    "Make a weather idiom calendar for different situations"
+                ],
+                sentencePractice: [
+                    {
+                        prompt: "Use 'under the weather' when someone feels sick:",
+                        example: "I can't come to the party tonight because I'm feeling _____."
+                    },
+                    {
+                        prompt: "Use 'save it for a rainy day' about saving money:",
+                        example: "Instead of buying that expensive toy, you should _____."
+                    },
+                    {
+                        prompt: "Use 'once in a blue moon' for something rare:",
+                        example: "My busy uncle only calls us _____."
+                    }
+                ]
+            },
+            {
+                number: 5,
+                level: 1,
+                title: "Body Parts Idioms",
+                idioms: [
+                    {
+                        idiom: "Give me a hand",
+                        meaning: "Help me",
+                        example: "Can you give me a hand with these heavy boxes?"
+                    },
+                    {
+                        idiom: "Keep an eye on",
+                        meaning: "Watch carefully, take care of",
+                        example: "Can you keep an eye on my bag while I go to the bathroom?"
+                    },
+                    {
+                        idiom: "Cost an arm and a leg",
+                        meaning: "Be very expensive",
+                        example: "That new car costs an arm and a leg!"
+                    },
+                    {
+                        idiom: "Keep your chin up",
+                        meaning: "Stay positive, don't give up",
+                        example: "I know you're sad about the test, but keep your chin up!"
+                    },
+                    {
+                        idiom: "All ears",
+                        meaning: "Listening carefully and attentively",
+                        example: "Tell me about your trip - I'm all ears!"
+                    }
+                ],
+                readingActivity: {
+                    title: "Moving Day",
+                    text: "The Martinez family was moving to a new house. 'Can you <span class='highlighted-idiom'>give me a hand</span> with this sofa?' asked Mr. Martinez. The moving truck was expensive - it <span class='highlighted-idiom'>cost an arm and a leg</span>! Mrs. Martinez asked their neighbor to <span class='highlighted-idiom'>keep an eye on</span> their old house until the new owners arrived. Their daughter Ana was sad about leaving her friends, but her mom said, '<span class='highlighted-idiom'>Keep your chin up</span>! You'll make new friends at your new school.' When Ana wanted to tell her parents about her worries, they sat down and said, 'We're <span class='highlighted-idiom'>all ears</span> - tell us everything.'"
+                },
+                activities: [
+                    "Point to each body part mentioned in the idioms",
+                    "Create actions or gestures for each body idiom",
+                    "Discuss why these specific body parts are used in these expressions",
+                    "Write a story using all five body part idioms"
+                ],
+                sentencePractice: [
+                    {
+                        prompt: "Use 'give me a hand' to ask for help:",
+                        example: "This table is too heavy for me. Can you _____?"
+                    },
+                    {
+                        prompt: "Use 'keep an eye on' to ask someone to watch something:",
+                        example: "I'm going shopping. Please _____ the children."
+                    },
+                    {
+                        prompt: "Use 'cost an arm and a leg' for something expensive:",
+                        example: "I want to buy that designer dress, but it _____."
+                    }
+                ]
+            },
+            {
+                number: 6,
+                level: 1,
+                title: "Color Idioms",
+                idioms: [
+                    {
+                        idiom: "Green with envy",
+                        meaning: "Very jealous",
+                        example: "When she saw her friend's new phone, she was green with envy."
+                    },
+                    {
+                        idiom: "Feeling blue",
+                        meaning: "Feeling sad",
+                        example: "I've been feeling blue since my best friend moved away."
+                    },
+                    {
+                        idiom: "See red",
+                        meaning: "Become very angry",
+                        example: "When I saw the mess in my room, I saw red!"
+                    },
+                    {
+                        idiom: "White lie",
+                        meaning: "A small, harmless lie",
+                        example: "I told a white lie and said I liked her haircut."
+                    },
+                    {
+                        idiom: "Black and white",
+                        meaning: "Very clear, with no confusion",
+                        example: "The rules are black and white - no phones in class."
+                    }
+                ],
+                readingActivity: {
+                    title: "The Art Class",
+                    text: "In art class, the students were learning about colors and emotions. When Jenny saw Michael's beautiful painting, she was <span class='highlighted-idiom'>green with envy</span> because hers didn't look as good. The teacher noticed that Sam was <span class='highlighted-idiom'>feeling blue</span> because he had forgotten his art supplies. When someone accidentally spilled paint on Lisa's artwork, she <span class='highlighted-idiom'>saw red</span> and shouted at everyone. The teacher had to tell <span class='highlighted-idiom'>a white lie</span> and said the paint stain looked like it was part of the design. At the end of class, the teacher made the rules <span class='highlighted-idiom'>black and white</span>: 'Always bring your supplies and be careful with the paint.'"
+                },
+                activities: [
+                    "Match colors with emotions and discuss why",
+                    "Paint or draw pictures representing each color idiom",
+                    "Share personal experiences using these color idioms",
+                    "Create a color emotion wheel with these idioms"
+                ],
+                sentencePractice: [
+                    {
+                        prompt: "Use 'green with envy' when someone is jealous:",
+                        example: "My sister was _____ when she saw my new bicycle."
+                    },
+                    {
+                        prompt: "Use 'feeling blue' when someone is sad:",
+                        example: "I've been _____ since my pet goldfish died."
+                    },
+                    {
+                        prompt: "Use 'see red' when someone gets very angry:",
+                        example: "My mom _____ when she found out I broke her vase."
+                    }
+                ]
+            },
+            {
+                number: 7,
+                level: 1,
+                title: "Time Idioms",
+                idioms: [
+                    {
+                        idiom: "Better late than never",
+                        meaning: "It's better to do something late than not do it at all",
+                        example: "I know I'm late with your birthday gift, but better late than never!"
+                    },
+                    {
+                        idiom: "In the nick of time",
+                        meaning: "Just in time, at the last moment",
+                        example: "I arrived at the station in the nick of time and caught my train."
+                    },
+                    {
+                        idiom: "Around the clock",
+                        meaning: "All day and all night, 24 hours",
+                        example: "The hospital staff works around the clock to help patients."
+                    },
+                    {
+                        idiom: "Time is money",
+                        meaning: "Time is valuable and shouldn't be wasted",
+                        example: "Hurry up! Time is money, and we have a deadline to meet."
+                    },
+                    {
+                        idiom: "Kill time",
+                        meaning: "Do something to pass time when you're waiting or bored",
+                        example: "I had an hour before my appointment, so I read a book to kill time."
+                    }
+                ],
+                readingActivity: {
+                    title: "The School Play",
+                    text: "The drama club was preparing for their school play. The director kept reminding everyone that <span class='highlighted-idiom'>time is money</span> because they only had two weeks left. Some students arrived late to rehearsals, but the director said, '<span class='highlighted-idiom'>Better late than never</span> - just don't make it a habit!' The costume team worked <span class='highlighted-idiom'>around the clock</span> to finish all the outfits. On opening night, one actor got stuck in traffic but arrived <span class='highlighted-idiom'>in the nick of time</span> before the curtain went up. During intermission, the audience had to <span class='highlighted-idiom'>kill time</span> for 15 minutes while the crew changed the set."
+                },
+                activities: [
+                    "Create a timeline using these time idioms",
+                    "Discuss personal experiences with being late or on time",
+                    "Role-play situations where these time idioms would be used",
+                    "Make a daily schedule and use time idioms to describe activities"
+                ],
+                sentencePractice: [
+                    {
+                        prompt: "Use 'better late than never' for something done late:",
+                        example: "I finally finished reading that book you recommended. _____!"
+                    },
+                    {
+                        prompt: "Use 'in the nick of time' for something done just in time:",
+                        example: "I submitted my homework _____ before the deadline."
+                    },
+                    {
+                        prompt: "Use 'around the clock' for something done continuously:",
+                        example: "The security guards work _____ to keep the building safe."
+                    }
+                ]
+            },
+            {
+                number: 8,
+                level: 1,
+                title: "House and Home Idioms",
+                idioms: [
+                    {
+                        idiom: "Home sweet home",
+                        meaning: "It's nice to be back at your own home",
+                        example: "After a long vacation, it's good to be back. Home sweet home!"
+                    },
+                    {
+                        idiom: "Make yourself at home",
+                        meaning: "Make yourself comfortable, act as if you're in your own home",
+                        example: "Come in and make yourself at home. Would you like some tea?"
+                    },
+                    {
+                        idiom: "Hit the roof",
+                        meaning: "Become very angry",
+                        example: "My dad will hit the roof when he sees this mess!"
+                    },
+                    {
+                        idiom: "Bring down the house",
+                        meaning: "Make the audience very excited and happy (especially in a performance)",
+                        example: "The singer's performance brought down the house!"
+                    },
+                    {
+                        idiom: "Clean house",
+                        meaning: "Get rid of unwanted things or people, organize",
+                        example: "The new manager decided to clean house and fire lazy employees."
+                    }
+                ],
+                readingActivity: {
+                    title: "The Housewarming Party",
+                    text: "The Johnsons were having a housewarming party for their new home. When guests arrived, Mrs. Johnson said, '<span class='highlighted-idiom'>Make yourself at home</span>!' Everyone was excited to see the beautiful house. After months of living in a hotel, Mr. Johnson was happy to say, '<span class='highlighted-idiom'>Home sweet home</span>!' Their teenage son played guitar and sang, and his performance <span class='highlighted-idiom'>brought down the house</span> - everyone loved it! However, when Mrs. Johnson saw the kitchen after the party, she was ready to <span class='highlighted-idiom'>hit the roof</span> because of the mess. The next day, the whole family had to <span class='highlighted-idiom'>clean house</span> and organize everything."
+                },
+                activities: [
+                    "Draw your dream house and describe it using home idioms",
+                    "Role-play hosting guests and using welcoming expressions",
+                    "Discuss what makes a house feel like home",
+                    "Create house rules using these idioms"
+                ],
+                sentencePractice: [
+                    {
+                        prompt: "Use 'make yourself at home' to welcome someone:",
+                        example: "Please sit down and _____. I'll get us some snacks."
+                    },
+                    {
+                        prompt: "Use 'hit the roof' when someone gets very angry:",
+                        example: "My teacher will _____ if we don't finish this project on time."
+                    },
+                    {
+                        prompt: "Use 'clean house' for organizing or getting rid of things:",
+                        example: "It's time to _____ and donate clothes I don't wear anymore."
+                    }
+                ]
+            },
+            {
+                number: 9,
+                level: 1,
+                title: "School and Learning Idioms",
+                idioms: [
+                    {
+                        idiom: "Hit the books",
+                        meaning: "Start studying seriously",
+                        example: "I have a big test tomorrow, so I need to hit the books tonight."
+                    },
+                    {
+                        idiom: "Learn by heart",
+                        meaning: "Memorize completely",
+                        example: "We have to learn this poem by heart for English class."
+                    },
+                    {
+                        idiom: "Pass with flying colors",
+                        meaning: "Pass a test or exam very successfully",
+                        example: "She studied hard and passed her driving test with flying colors."
+                    },
+                    {
+                        idiom: "Teacher's pet",
+                        meaning: "A student who is the teacher's favorite",
+                        example: "Everyone thinks Sarah is the teacher's pet because she always gets good grades."
+                    },
+                    {
+                        idiom: "School of hard knocks",
+                        meaning: "Learning from difficult life experiences rather than formal education",
+                        example: "He never went to college, but he learned business from the school of hard knocks."
+                    }
+                ],
+                readingActivity: {
+                    title: "Exam Week",
+                    text: "It was exam week at Lincoln High School, and all the students were nervous. Maria knew she had to <span class='highlighted-idiom'>hit the books</span> if she wanted to do well in her history exam. Her friend Jake was trying to <span class='highlighted-idiom'>learn by heart</span> all the math formulas. Everyone was jealous of Amy because she was considered the <span class='highlighted-idiom'>teacher's pet</span> and always seemed to know the right answers. Tom, who had struggled in school, said he preferred learning from the <span class='highlighted-idiom'>school of hard knocks</span> through real-life experiences. In the end, most students worked hard and <span class='highlighted-idiom'>passed with flying colors</span>."
+                },
+                activities: [
+                    "Share your own school experiences using these idioms",
+                    "Create study tips using school idioms",
+                    "Role-play teacher-student conversations with these expressions",
+                    "Design a school poster using these idioms"
+                ],
+                sentencePractice: [
+                    {
+                        prompt: "Use 'hit the books' when you need to study:",
+                        example: "The final exam is next week, so I really need to _____."
+                    },
+                    {
+                        prompt: "Use 'learn by heart' for memorizing something:",
+                        example: "For the school play, I have to _____ all my lines."
+                    },
+                    {
+                        prompt: "Use 'pass with flying colors' for doing very well:",
+                        example: "After studying so hard, I hope to _____ on this test."
+                    }
+                ]
+            },
+            {
+                number: 10,
+                level: 1,
+                title: "Money and Shopping Idioms",
+                idioms: [
+                    {
+                        idiom: "Break the bank",
+                        meaning: "Cost too much money, be very expensive",
+                        example: "I want to buy a new laptop, but I don't want to break the bank."
+                    },
+                    {
+                        idiom: "Penny for your thoughts",
+                        meaning: "What are you thinking about?",
+                        example: "You look worried. A penny for your thoughts?"
+                    },
+                    {
+                        idiom: "Worth every penny",
+                        meaning: "Worth the money spent, good value",
+                        example: "This expensive jacket is worth every penny - it's so warm!"
+                    },
+                    {
+                        idiom: "Tighten your belt",
+                        meaning: "Spend less money, be more careful with money",
+                        example: "We need to tighten our belts this month because of the high electricity bill."
+                    },
+                    {
+                        idiom: "Shop till you drop",
+                        meaning: "Shop for a very long time until you're exhausted",
+                        example: "My sister loves to shop till she drops at the mall."
+                    }
+                ],
+                readingActivity: {
+                    title: "The Shopping Trip",
+                    text: "Lisa and her mom went shopping for back-to-school clothes. Lisa wanted an expensive designer jacket, but her mom said, 'That will <span class='highlighted-idiom'>break the bank</span>! We need to <span class='highlighted-idiom'>tighten our belts</span> this month.' Lisa looked disappointed, so her mom asked, '<span class='highlighted-idiom'>A penny for your thoughts</span>?' Lisa explained that all her friends had nice clothes. Her mom found a beautiful jacket on sale and said, 'This one is <span class='highlighted-idiom'>worth every penny</span> - it's good quality and affordable.' They spent the whole day shopping, and Lisa joked, 'We really did <span class='highlighted-idiom'>shop till we drop</span>!'"
+                },
+                activities: [
+                    "Create a budget using money idioms",
+                    "Role-play shopping conversations with these expressions",
+                    "Discuss the value of money and smart shopping",
+                    "Make a list of things that are 'worth every penny'"
+                ],
+                sentencePractice: [
+                    {
+                        prompt: "Use 'break the bank' for something too expensive:",
+                        example: "I'd love to go on that vacation, but it would _____."
+                    },
+                    {
+                        prompt: "Use 'worth every penny' for something valuable:",
+                        example: "This expensive textbook is _____ because it helps me understand everything."
+                    },
+                    {
+                        prompt: "Use 'tighten your belt' for spending less money:",
+                        example: "After buying a new car, we need to _____ for a few months."
+                    }
+                ]
+            },
+            {
+                number: 11,
+                level: 1,
+                title: "Sports and Games Idioms",
+                idioms: [
+                    {
+                        idiom: "Hit a home run",
+                        meaning: "Be very successful at something",
+                        example: "Your presentation hit a home run! Everyone loved it."
+                    },
+                    {
+                        idiom: "Strike out",
+                        meaning: "Fail completely",
+                        example: "I struck out when I asked her to the dance - she said no."
+                    },
+                    {
+                        idiom: "Ball is in your court",
+                        meaning: "It's your turn to make a decision or take action",
+                        example: "I've given you all the information. Now the ball is in your court."
+                    },
+                    {
+                        idiom: "Play it by ear",
+                        meaning: "Decide what to do as the situation develops",
+                        example: "I don't know what time I'll arrive, so let's just play it by ear."
+                    },
+                    {
+                        idiom: "Get the ball rolling",
+                        meaning: "Start something, begin an activity",
+                        example: "Let's get the ball rolling on this project by making a plan."
+                    }
+                ],
+                readingActivity: {
+                    title: "The School Tournament",
+                    text: "The annual school tournament was about to begin. The coach told the team, 'Let's <span class='highlighted-idiom'>get the ball rolling</span> with some warm-up exercises.' During the first game, Tommy <span class='highlighted-idiom'>hit a home run</span> with his amazing goal that won the match. However, in the second game, the team <span class='highlighted-idiom'>struck out</span> and lost badly. The coach said, 'We don't have a fixed strategy for the final game. We'll have to <span class='highlighted-idiom'>play it by ear</span> and see what the other team does.' Before the final match, the captain told his teammates, 'We've practiced hard, and now <span class='highlighted-idiom'>the ball is in your court</span> - go out there and do your best!'"
+                },
+                activities: [
+                    "Act out each sports idiom with appropriate gestures",
+                    "Discuss your favorite sports and relate them to these idioms",
+                    "Create a sports commentary using these expressions",
+                    "Play games and use these idioms during the activities"
+                ],
+                sentencePractice: [
+                    {
+                        prompt: "Use 'hit a home run' for being very successful:",
+                        example: "My science project _____ and won first place in the fair."
+                    },
+                    {
+                        prompt: "Use 'the ball is in your court' when it's someone's turn:",
+                        example: "I've explained the problem. Now _____ to find a solution."
+                    },
+                    {
+                        prompt: "Use 'get the ball rolling' to start something:",
+                        example: "Let's _____ on planning the school dance."
+                    }
+                ]
+            },
+            {
+                number: 12,
+                level: 1,
+                title: "Family and Friends Idioms",
+                idioms: [
+                    {
+                        idiom: "Blood is thicker than water",
+                        meaning: "Family relationships are stronger than friendships",
+                        example: "Even though we fight sometimes, blood is thicker than water - I'll always help my brother."
+                    },
+                    {
+                        idiom: "Like father, like son",
+                        meaning: "A son is similar to his father in behavior or appearance",
+                        example: "Tom loves music just like his dad. Like father, like son!"
+                    },
+                    {
+                        idiom: "A chip off the old block",
+                        meaning: "Someone who is very similar to their parent",
+                        example: "Sarah is so good at math, just like her mother. She's a chip off the old block."
+                    },
+                    {
+                        idiom: "Birds of a feather flock together",
+                        meaning: "People with similar interests become friends",
+                        example: "All my friends love reading. Birds of a feather flock together!"
+                    },
+                    {
+                        idiom: "A friend in need is a friend indeed",
+                        meaning: "A true friend helps you when you have problems",
+                        example: "When I was sick, only Maria came to help me. A friend in need is a friend indeed."
+                    }
+                ],
+                readingActivity: {
+                    title: "The Family Reunion",
+                    text: "The Wilson family was having their annual reunion. Everyone noticed that young David was excellent at playing piano, just like his grandfather. 'He's definitely <span class='highlighted-idiom'>a chip off the old block</span>,' said his aunt. David's father was also musical, and people said, '<span class='highlighted-idiom'>Like father, like son</span>!' During the reunion, some cousins who hadn't seen each other in years quickly became close again because they all loved the same video games. As Uncle Bob said, '<span class='highlighted-idiom'>Birds of a feather flock together</span>.' When David's cousin got hurt playing football, David immediately helped him. His grandmother smiled and said, '<span class='highlighted-idiom'>A friend in need is a friend indeed</span>.' Despite some family arguments, everyone remembered that <span class='highlighted-idiom'>blood is thicker than water</span>."
+                },
+                activities: [
+                    "Draw your family tree and describe similarities using these idioms",
+                    "Share stories about your friends and family using these expressions",
+                    "Discuss what makes a good friend or family member",
+                    "Create family mottos using these idioms"
+                ],
+                sentencePractice: [
+                    {
+                        prompt: "Use 'like father, like son' for similar family members:",
+                        example: "Both my dad and my brother are great at fixing cars. _____!"
+                    },
+                    {
+                        prompt: "Use 'birds of a feather flock together' for similar friends:",
+                        example: "All my friends love basketball. _____."
+                    },
+                    {
+                        prompt: "Use 'a friend in need is a friend indeed' for helpful friends:",
+                        example: "When I lost my wallet, Tom lent me money. _____."
+                    }
+                ]
+            },
+            {
+                number: 13,
+                level: 1,
+                title: "Travel and Transportation Idioms",
+                idioms: [
+                    {
+                        idiom: "Hit the road",
+                        meaning: "Start a journey, leave",
+                        example: "It's getting late. We should hit the road if we want to arrive before dark."
+                    },
+                    {
+                        idiom: "In the same boat",
+                        meaning: "In the same difficult situation",
+                        example: "We're all worried about the test tomorrow. We're in the same boat."
+                    },
+                    {
+                        idiom: "Miss the boat",
+                        meaning: "Miss an opportunity",
+                        example: "I wanted to sign up for the art class, but I missed the boat - it's already full."
+                    },
+                    {
+                        idiom: "On the right track",
+                        meaning: "Doing something correctly, making good progress",
+                        example: "Your essay is getting better. You're on the right track!"
+                    },
+                    {
+                        idiom: "Go the extra mile",
+                        meaning: "Make an extra effort, do more than expected",
+                        example: "The teacher went the extra mile and stayed after school to help us."
+                    }
+                ],
+                readingActivity: {
+                    title: "The School Trip",
+                    text: "Mrs. Johnson's class was planning a field trip to the science museum. She told the students, 'We need to <span class='highlighted-idiom'>hit the road</span> early in the morning to avoid traffic.' Some students were worried about the cost of the trip, but Mrs. Johnson reminded them, 'We're all <span class='highlighted-idiom'>in the same boat</span> - the school will help with expenses.' Tommy was disappointed because he <span class='highlighted-idiom'>missed the boat</span> on signing up for the planetarium show. Mrs. Johnson noticed that Sarah was working hard on her science project and told her, 'You're <span class='highlighted-idiom'>on the right track</span> with your research!' The museum guide <span class='highlighted-idiom'>went the extra mile</span> and gave them a special behind-the-scenes tour."
+                },
+                activities: [
+                    "Plan an imaginary trip using travel idioms",
+                    "Role-play travel situations with these expressions",
+                    "Discuss real travel experiences using these idioms",
+                    "Create travel advice using these expressions"
+                ],
+                sentencePractice: [
+                    {
+                        prompt: "Use 'hit the road' when starting a journey:",
+                        example: "The vacation starts tomorrow morning. Let's _____ at 8 AM."
+                    },
+                    {
+                        prompt: "Use 'in the same boat' for a shared situation:",
+                        example: "We're all nervous about the job interview. We're _____."
+                    },
+                    {
+                        prompt: "Use 'go the extra mile' for making extra effort:",
+                        example: "The waiter _____ and brought us free dessert."
+                    }
+                ]
+            },
+            {
+                number: 14,
+                level: 1,
+                title: "Work and Business Idioms",
+                idioms: [
+                    {
+                        idiom: "Get down to business",
+                        meaning: "Start working seriously on something",
+                        example: "We've talked enough. Let's get down to business and finish this project."
+                    },
+                    {
+                        idiom: "Learn the ropes",
+                        meaning: "Learn the basic skills needed for a job or activity",
+                        example: "It's my first day at work, so I need to learn the ropes."
+                    },
+                    {
+                        idiom: "Call it a day",
+                        meaning: "Stop working, finish for the day",
+                        example: "We've been working for 8 hours. Let's call it a day."
+                    },
+                    {
+                        idiom: "Back to the drawing board",
+                        meaning: "Start over, try a different approach",
+                        example: "Our plan didn't work. It's back to the drawing board."
+                    },
+                    {
+                        idiom: "The ball is rolling",
+                        meaning: "Something has started and is making progress",
+                        example: "We've started the project and the ball is rolling now."
+                    }
+                ],
+                readingActivity: {
+                    title: "The New Employee",
+                    text: "Jake started his first job at a local restaurant. His manager said, 'Welcome to the team! You'll need to <span class='highlighted-idiom'>learn the ropes</span> quickly because we're very busy.' After a brief introduction, the manager said, 'Let's <span class='highlighted-idiom'>get down to business</span> and I'll show you how to take orders.' Jake made some mistakes with his first few customers, so his manager said, 'Don't worry, it's <span class='highlighted-idiom'>back to the drawing board</span> - let's try a different approach.' By the end of his shift, Jake was doing much better. His manager said, 'Great improvement! <span class='highlighted-idiom'>The ball is rolling</span> now.' After working for 8 hours, Jake was tired and ready to <span class='highlighted-idiom'>call it a day</span>."
+                },
+                activities: [
+                    "Role-play job interviews using work idioms",
+                    "Discuss different jobs and how these idioms apply",
+                    "Create workplace scenarios using these expressions",
+                    "Practice giving work advice with these idioms"
+                ],
+                sentencePractice: [
+                    {
+                        prompt: "Use 'get down to business' to start working seriously:",
+                        example: "We've chatted long enough. Let's _____ and finish this homework."
+                    },
+                    {
+                        prompt: "Use 'learn the ropes' for learning a new job or skill:",
+                        example: "I just joined the soccer team, so I need to _____."
+                    },
+                    {
+                        prompt: "Use 'call it a day' when finishing work:",
+                        example: "We've been studying for 4 hours. Let's _____."
+                    }
+                ]
+            },
+            {
+                number: 15,
+                level: 1,
+                title: "Health and Feelings Idioms",
+                idioms: [
+                    {
+                        idiom: "On cloud nine",
+                        meaning: "Very happy and excited",
+                        example: "She was on cloud nine when she got accepted to her dream college."
+                    },
+                    {
+                        idiom: "Down in the dumps",
+                        meaning: "Feeling sad or depressed",
+                        example: "He's been down in the dumps since his dog ran away."
+                    },
+                    {
+                        idiom: "Fit as a fiddle",
+                        meaning: "In excellent health",
+                        example: "My grandmother is 80 years old but still fit as a fiddle."
+                    },
+                    {
+                        idiom: "Sick as a dog",
+                        meaning: "Very sick",
+                        example: "I ate too much candy and now I'm sick as a dog."
+                    },
+                    {
+                        idiom: "Over the moon",
+                        meaning: "Extremely happy and excited",
+                        example: "When I won the lottery, I was over the moon!"
+                    }
+                ],
+                readingActivity: {
+                    title: "The School Health Fair",
+                    text: "Lincoln Elementary was having a health fair to teach students about staying healthy. Mrs. Peterson, the school nurse, was <span class='highlighted-idiom'>fit as a fiddle</span> at age 65 and wanted to share her secrets. She noticed that Tommy looked pale and asked if he was feeling <span class='highlighted-idiom'>under the weather</span>. Tommy admitted he had eaten too much junk food and was <span class='highlighted-idiom'>sick as a dog</span>. Meanwhile, Sarah was <span class='highlighted-idiom'>on cloud nine</span> because she had just won the healthy eating contest. Her friend Lisa was <span class='highlighted-idiom'>down in the dumps</span> because she hadn't won anything, but when she learned she'd won second place, she was <span class='highlighted-idiom'>over the moon</span>!"
+                },
+                activities: [
+                    "Discuss healthy habits using health idioms",
+                    "Role-play doctor-patient conversations with these expressions",
+                    "Share personal experiences with being sick or healthy",
+                    "Create health tips using these idioms"
+                ],
+                sentencePractice: [
+                    {
+                        prompt: "Use 'on cloud nine' when someone is very happy:",
+                        example: "When I got an A+ on my test, I was _____."
+                    },
+                    {
+                        prompt: "Use 'down in the dumps' when someone is sad:",
+                        example: "My friend has been _____ since her cat went missing."
+                    },
+                    {
+                        prompt: "Use 'fit as a fiddle' for someone very healthy:",
+                        example: "My grandfather exercises every day and is _____."
+                    }
+                ]
+            },
+
+            // LEVEL 2: COMMON EXPRESSIONS (Lessons 16-30)
+            {
+                number: 16,
+                level: 2,
+                title: "Problem Solving and Challenges",
+                idioms: [
+                    {
+                        idiom: "Cross that bridge when you come to it",
+                        meaning: "Deal with a problem when it happens, not before",
+                        example: "I'm worried about the final exam, but I'll cross that bridge when I come to it."
+                    },
+                    {
+                        idiom: "Between a rock and a hard place",
+                        meaning: "In a difficult situation with no good choices",
+                        example: "I'm between a rock and a hard place - I need money but I also need to study."
+                    },
+                    {
+                        idiom: "The last straw",
+                        meaning: "The final problem that makes you lose patience",
+                        example: "When my computer crashed again, that was the last straw - I bought a new one."
+                    },
+                    {
+                        idiom: "Make ends meet",
+                        meaning: "Have enough money to pay for basic needs",
+                        example: "With the high cost of living, it's hard to make ends meet."
+                    },
+                    {
+                        idiom: "Turn over a new leaf",
+                        meaning: "Start behaving better, make a fresh start",
+                        example: "After failing his exams, Tom decided to turn over a new leaf and study harder."
+                    }
+                ],
+                readingActivity: {
+                    title: "College Struggles",
+                    text: "Alex was having a difficult time in college. He was working part-time to <span class='highlighted-idiom'>make ends meet</span> while trying to keep up with his studies. He felt like he was <span class='highlighted-idiom'>between a rock and a hard place</span> because he needed the job for money but it was affecting his grades. When he failed another test, that was <span class='highlighted-idiom'>the last straw</span> - he knew something had to change. His advisor suggested he apply for financial aid, but Alex worried about the application process. 'Don't worry about that now,' she said. 'You'll <span class='highlighted-idiom'>cross that bridge when you come to it</span>.' Alex decided to <span class='highlighted-idiom'>turn over a new leaf</span> and create a better study schedule."
+                },
+                activities: [
+                    "Discuss difficult decisions you've had to make",
+                    "Role-play giving advice using these idioms",
+                    "Create problem-solving scenarios using these expressions",
+                    "Share stories about making fresh starts"
+                ],
+                sentencePractice: [
+                    {
+                        prompt: "Use 'between a rock and a hard place' for difficult choices:",
+                        example: "I'm _____ - I want to help both friends, but they're fighting with each other."
+                    },
+                    {
+                        prompt: "Use 'the last straw' for the final problem:",
+                        example: "The traffic, the rain, and now a flat tire - this is _____!"
+                    },
+                    {
+                        prompt: "Use 'turn over a new leaf' for making a fresh start:",
+                        example: "After getting in trouble, my brother decided to _____ and behave better."
+                    }
+                ]
+            },
+            {
+                number: 17,
+                level: 2,
+                title: "Communication and Relationships",
+                idioms: [
+                    {
+                        idiom: "Break the ice",
+                        meaning: "Start a conversation or make people feel comfortable",
+                        example: "To break the ice at the party, I asked everyone about their hobbies."
+                    },
+                    {
+                        idiom: "Get it off your chest",
+                        meaning: "Talk about something that's bothering you",
+                        example: "I was angry about the situation, so I called my friend to get it off my chest."
+                    },
+                    {
+                        idiom: "Bury the hatchet",
+                        meaning: "End an argument and become friends again",
+                        example: "After fighting for months, the two friends decided to bury the hatchet."
+                    },
+                    {
+                        idiom: "Give someone the cold shoulder",
+                        meaning: "Ignore someone or be unfriendly to them",
+                        example: "Ever since our argument, she's been giving me the cold shoulder."
+                    },
+                    {
+                        idiom: "Heart to heart",
+                        meaning: "An honest, serious conversation",
+                        example: "We need to have a heart to heart talk about our relationship."
+                    }
+                ],
+                readingActivity: {
+                    title: "The Friendship Crisis",
+                    text: "Best friends Emma and Sophie had been fighting for weeks over a misunderstanding. Emma felt hurt and was <span class='highlighted-idiom'>giving Sophie the cold shoulder</span> whenever they saw each other at school. Sophie wanted to fix things but didn't know how to <span class='highlighted-idiom'>break the ice</span> and start a conversation. Finally, Sophie's mom suggested she call Emma to <span class='highlighted-idiom'>get it off her chest</span> and explain her side of the story. When Sophie called, Emma agreed they needed to have a <span class='highlighted-idiom'>heart to heart</span> conversation about what had happened. After talking honestly about their feelings, both girls decided to <span class='highlighted-idiom'>bury the hatchet</span> and be friends again."
+                },
+                activities: [
+                    "Practice starting conversations and breaking the ice",
+                    "Role-play resolving conflicts using these idioms",
+                    "Discuss the importance of honest communication",
+                    "Share experiences about making up with friends"
+                ],
+                sentencePractice: [
+                    {
+                        prompt: "Use 'break the ice' for starting conversations:",
+                        example: "At the new school, I told a joke to _____ with my classmates."
+                    },
+                    {
+                        prompt: "Use 'get it off your chest' for expressing feelings:",
+                        example: "I was upset about the grade, so I talked to my teacher to _____."
+                    },
+                    {
+                        prompt: "Use 'bury the hatchet' for ending arguments:",
+                        example: "My brother and I fought about the TV, but we decided to _____."
+                    }
+                ]
+            },
+            {
+                number: 18,
+                level: 2,
+                title: "Success and Failure",
+                idioms: [
+                    {
+                        idiom: "Back to square one",
+                        meaning: "Start over from the beginning",
+                        example: "The project failed, so we're back to square one."
+                    },
+                    {
+                        idiom: "Hit the nail on the head",
+                        meaning: "Be exactly right about something",
+                        example: "You hit the nail on the head when you said the problem was communication."
+                    },
+                    {
+                        idiom: "Miss the mark",
+                        meaning: "Fail to achieve what you intended",
+                        example: "My joke was supposed to be funny, but it missed the mark."
+                    },
+                    {
+                        idiom: "Shoot for the stars",
+                        meaning: "Try to achieve something very ambitious",
+                        example: "Don't limit yourself - shoot for the stars and apply to your dream college."
+                    },
+                    {
+                        idiom: "Close but no cigar",
+                        meaning: "Almost successful but not quite",
+                        example: "I got 89% on the test - close but no cigar for an A."
+                    }
+                ],
+                readingActivity: {
+                    title: "The Science Fair Project",
+                    text: "Kevin was determined to <span class='highlighted-idiom'>shoot for the stars</span> with his science fair project about renewable energy. He worked for weeks, but his first experiment completely failed, putting him <span class='highlighted-idiom'>back to square one</span>. His teacher looked at his new plan and said, 'You're on the right track now - this approach makes much more sense.' Kevin's friend suggested he focus on solar power, and Kevin realized his friend had <span class='highlighted-idiom'>hit the nail on the head</span> - that was exactly what he needed. His first presentation to the class <span class='highlighted-idiom'>missed the mark</span> because he was too nervous, but he practiced and improved. In the end, he came in second place - <span class='highlighted-idiom'>close but no cigar</span> for first, but still a great achievement!"
+                },
+                activities: [
+                    "Set ambitious goals and discuss how to achieve them",
+                    "Share stories about starting over after failures",
+                    "Practice giving accurate feedback using these idioms",
+                    "Discuss what it means to almost succeed vs. completely succeed"
+                ],
+                sentencePractice: [
+                    {
+                        prompt: "Use 'back to square one' for starting over:",
+                        example: "My computer crashed and I lost all my work, so I'm _____."
+                    },
+                    {
+                        prompt: "Use 'hit the nail on the head' for being exactly right:",
+                        example: "When you said I needed more sleep, you _____."
+                    },
+                    {
+                        prompt: "Use 'shoot for the stars' for ambitious goals:",
+                        example: "Don't just aim for a good grade - _____ and try for the best!"
+                    }
+                ]
+            },
+            {
+                number: 19,
+                level: 2,
+                title: "Time and Opportunity",
+                idioms: [
+                    {
+                        idiom: "Make hay while the sun shines",
+                        meaning: "Take advantage of good conditions while they last",
+                        example: "The weather is perfect for painting the house - let's make hay while the sun shines."
+                    },
+                    {
+                        idiom: "A stitch in time saves nine",
+                        meaning: "Fixing a small problem now prevents bigger problems later",
+                        example: "You should fix that small leak now - a stitch in time saves nine."
+                    },
+                    {
+                        idiom: "Rome wasn't built in a day",
+                        meaning: "Important things take time to accomplish",
+                        example: "Learning a language is difficult, but remember - Rome wasn't built in a day."
+                    },
+                    {
+                        idiom: "Strike while the iron is hot",
+                        meaning: "Act quickly when you have a good opportunity",
+                        example: "The company is hiring now, so strike while the iron is hot and apply today."
+                    },
+                    {
+                        idiom: "Time heals all wounds",
+                        meaning: "Emotional pain gets better with time",
+                        example: "I know you're sad about the breakup, but time heals all wounds."
+                    }
+                ],
+                readingActivity: {
+                    title: "The Entrepreneur's Journey",
+                    text: "Sarah had always dreamed of starting her own bakery. When she inherited some money from her grandmother, her business advisor told her to <span class='highlighted-idiom'>strike while the iron is hot</span> and start the business while she had the funds. Sarah knew that <span class='highlighted-idiom'>Rome wasn't built in a day</span>, so she made a careful five-year plan. She decided to <span class='highlighted-idiom'>make hay while the sun shines</span> and work extra hours while she was young and energetic. When she noticed a small problem with her oven, she fixed it immediately, remembering that <span class='highlighted-idiom'>a stitch in time saves nine</span>. During difficult times when she felt discouraged, her mentor reminded her that <span class='highlighted-idiom'>time heals all wounds</span> and that persistence would pay off."
+                },
+                activities: [
+                    "Discuss opportunities you've taken or missed",
+                    "Create timelines for achieving long-term goals",
+                    "Share examples of how small problems became big ones",
+                    "Talk about how time has helped you overcome difficulties"
+                ],
+                sentencePractice: [
+                    {
+                        prompt: "Use 'strike while the iron is hot' for taking quick action:",
+                        example: "The store is having a sale today, so let's _____ and buy what we need."
+                    },
+                    {
+                        prompt: "Use 'Rome wasn't built in a day' for patience with progress:",
+                        example: "I know you want to be fluent in Spanish quickly, but _____."
+                    },
+                    {
+                        prompt: "Use 'make hay while the sun shines' for using good conditions:",
+                        example: "The library is quiet today, so let's _____ and get our studying done."
+                    }
+                ]
+            },
+            {
+                number: 20,
+                level: 2,
+                title: "Advice and Wisdom",
+                idioms: [
+                    {
+                        idiom: "Don't count your chickens before they hatch",
+                        meaning: "Don't assume something will happen before it actually does",
+                        example: "I might get the job, but I won't count my chickens before they hatch."
+                    },
+                    {
+                        idiom: "Don't put all your eggs in one basket",
+                        meaning: "Don't risk everything on one plan or investment",
+                        example: "Apply to several colleges - don't put all your eggs in one basket."
+                    },
+                    {
+                        idiom: "Look before you leap",
+                        meaning: "Think carefully before making a decision",
+                        example: "That business opportunity sounds good, but look before you leap."
+                    },
+                    {
+                        idiom: "Don't bite off more than you can chew",
+                        meaning: "Don't try to do more than you can handle",
+                        example: "Taking six classes might be too much - don't bite off more than you can chew."
+                    },
+                    {
+                        idiom: "The grass is always greener on the other side",
+                        meaning: "Other people's situations always seem better than your own",
+                        example: "You think your friend's job is better, but the grass is always greener on the other side."
+                    }
+                ],
+                readingActivity: {
+                    title: "Career Counseling Session",
+                    text: "Mark was meeting with his career counselor because he was unhappy with his current job. He kept talking about how much better his friend's job seemed, but the counselor reminded him that <span class='highlighted-idiom'>the grass is always greener on the other side</span>. Mark wanted to quit immediately and start three different businesses at once, but the counselor advised him not to <span class='highlighted-idiom'>bite off more than he can chew</span>. 'You should also <span class='highlighted-idiom'>look before you leap</span>,' she said, 'and research these opportunities carefully.' The counselor suggested he apply to different companies and not <span class='highlighted-idiom'>put all his eggs in one basket</span>. 'And remember,' she added, '<span class='highlighted-idiom'>don't count your chickens before they hatch</span> - wait until you actually get job offers before making decisions.'"
+                },
+                activities: [
+                    "Give advice to friends using these idioms",
+                    "Discuss times when you should have been more careful",
+                    "Share examples of when things didn't turn out as expected",
+                    "Create advice columns using these expressions"
+                ],
+                sentencePractice: [
+                    {
+                        prompt: "Use 'don't count your chickens before they hatch' for being cautious:",
+                        example: "I think I did well on the test, but I won't _____ until I see my grade."
+                    },
+                    {
+                        prompt: "Use 'look before you leap' for careful decision-making:",
+                        example: "That apartment looks nice, but _____ and check the neighborhood first."
+                    },
+                    {
+                        prompt: "Use 'don't bite off more than you can chew' for realistic goals:",
+                        example: "You want to learn three languages this year? _____."
+                    }
+                ]
+            },
+            {
+                number: 21,
+                level: 2,
+                title: "Secrets and Information",
+                idioms: [
+                    {
+                        idiom: "Keep it under wraps",
+                        meaning: "Keep something secret",
+                        example: "The surprise party is next week, so keep it under wraps."
+                    },
+                    {
+                        idiom: "Let sleeping dogs lie",
+                        meaning: "Don't bring up old problems or arguments",
+                        example: "They made up after their fight, so let sleeping dogs lie."
+                    },
+                    {
+                        idiom: "Keep your cards close to your chest",
+                        meaning: "Keep your plans or thoughts secret",
+                        example: "He's very private about his business plans - he keeps his cards close to his chest."
+                    },
+                    {
+                        idiom: "Read between the lines",
+                        meaning: "Understand the hidden meaning in what someone says",
+                        example: "She said the meeting went 'fine,' but reading between the lines, I think there were problems."
+                    },
+                    {
+                        idiom: "Hear it through the grapevine",
+                        meaning: "Learn information through gossip or rumors",
+                        example: "I heard through the grapevine that they're getting married next month."
+                    }
+                ],
+                readingActivity: {
+                    title: "Office Politics",
+                    text: "Jennifer worked at a company where office politics were complicated. Her boss often spoke in vague terms during meetings, so she had to <span class='highlighted-idiom'>read between the lines</span> to understand what he really meant. When Jennifer learned about upcoming layoffs, her manager asked her to <span class='highlighted-idiom'>keep it under wraps</span> until the official announcement. Her colleague Tom was always asking questions about company changes, but Jennifer <span class='highlighted-idiom'>kept her cards close to her chest</span> and didn't reveal what she knew. When Tom said he <span class='highlighted-idiom'>heard through the grapevine</span> about a previous office scandal, Jennifer's manager reminded everyone to <span class='highlighted-idiom'>let sleeping dogs lie</span> and focus on current work instead."
+                },
+                activities: [
+                    "Practice keeping secrets and being trustworthy",
+                    "Discuss the importance of reading nonverbal communication",
+                    "Role-play situations where discretion is important",
+                    "Share experiences about understanding hidden meanings"
+                ],
+                sentencePractice: [
+                    {
+                        prompt: "Use 'keep it under wraps' for keeping secrets:",
+                        example: "The new product launch is confidential, so please _____."
+                    },
+                    {
+                        prompt: "Use 'read between the lines' for understanding hidden meanings:",
+                        example: "When she said 'maybe later,' I had to _____ and realize she meant no."
+                    },
+                    {
+                        prompt: "Use 'let sleeping dogs lie' for avoiding old problems:",
+                        example: "They resolved their argument months ago, so let's _____."
+                    }
+                ]
+            },
+            {
+                number: 22,
+                level: 2,
+                title: "Effort and Hard Work",
+                idioms: [
+                    {
+                        idiom: "Burn the midnight oil",
+                        meaning: "Work late into the night",
+                        example: "I have to burn the midnight oil to finish this report by tomorrow."
+                    },
+                    {
+                        idiom: "Pull your weight",
+                        meaning: "Do your fair share of work",
+                        example: "Everyone needs to pull their weight if we want to finish this project on time."
+                    },
+                    {
+                        idiom: "Roll up your sleeves",
+                        meaning: "Get ready to work hard",
+                        example: "This kitchen is a mess - let's roll up our sleeves and clean it."
+                    },
+                    {
+                        idiom: "Sweat blood",
+                        meaning: "Work extremely hard with great effort",
+                        example: "I sweated blood to pass that difficult exam."
+                    },
+                    {
+                        idiom: "Put your nose to the grindstone",
+                        meaning: "Work very hard and focus on your tasks",
+                        example: "If you want to improve your grades, you need to put your nose to the grindstone."
+                    }
+                ],
+                readingActivity: {
+                    title: "The Group Project",
+                    text: "Five students were assigned a major group project for their history class. The deadline was approaching quickly, and they realized they needed to <span class='highlighted-idiom'>roll up their sleeves</span> and get serious about the work. Sarah was willing to go the extra mile and do extra research, while Mike had to <span class='highlighted-idiom'>burn the midnight oil</span> to catch up on his part. However, one team member wasn't <span class='highlighted-idiom'>pulling his weight</span> and left most of the work to others. The dedicated students <span class='highlighted-idiom'>sweated blood</span> to make sure their project would be excellent despite the challenges. Their teacher advised them to <span class='highlighted-idiom'>put their noses to the grindstone</span> during the final week to ensure success."
+                },
+                activities: [
+                    "Discuss times when you had to work very hard",
+                    "Share examples of people who go the extra mile",
+                    "Talk about fair distribution of work in group projects",
+                    "Create work schedules that show dedication and effort"
+                ],
+                sentencePractice: [
+                    {
+                        prompt: "Use 'burn the midnight oil' for working late:",
+                        example: "The deadline is tomorrow, so I'll have to _____ tonight."
+                    },
+                    {
+                        prompt: "Use 'pull your weight' for doing fair share:",
+                        example: "This is a team effort, so everyone needs to _____."
+                    },
+                    {
+                        prompt: "Use 'roll up your sleeves' for getting ready to work:",
+                        example: "The house is messy before the party, so let's _____ and clean."
+                    }
+                ]
+            },
+            {
+                number: 23,
+                level: 2,
+                title: "Change and Adaptation",
+                idioms: [
+                    {
+                        idiom: "Go with the flow",
+                        meaning: "Accept and adapt to circumstances",
+                        example: "The plans changed, but I decided to go with the flow."
+                    },
+                    {
+                        idiom: "Roll with the punches",
+                        meaning: "Adapt to difficult situations without giving up",
+                        example: "Business has been tough, but we're learning to roll with the punches."
+                    },
+                    {
+                        idiom: "Change your tune",
+                        meaning: "Change your opinion or attitude",
+                        example: "He used to hate vegetables, but he changed his tune after trying my cooking."
+                    },
+                    {
+                        idiom: "Move with the times",
+                        meaning: "Adapt to modern ways and new technology",
+                        example: "The old bookstore had to move with the times and start selling online."
+                    },
+                    {
+                        idiom: "New lease on life",
+                        meaning: "A fresh start or renewed energy and enthusiasm",
+                        example: "After recovering from his illness, he got a new lease on life and started traveling."
+                    }
+                ],
+                readingActivity: {
+                    title: "The Family Business",
+                    text: "The Peterson family had owned a small grocery store for three generations, but times were changing. When a large supermarket opened nearby, Mr. Peterson initially refused to change anything. However, when sales dropped significantly, he realized he needed to <span class='highlighted-idiom'>move with the times</span> and adapt to modern shopping habits. His daughter suggested they start online delivery, and though he was skeptical at first, Mr. Peterson <span class='highlighted-idiom'>changed his tune</span> when he saw how popular it became. The family had to <span class='highlighted-idiom'>roll with the punches</span> as they faced various challenges during the transition. Mrs. Peterson decided to <span class='highlighted-idiom'>go with the flow</span> and support the changes, even though she preferred the old ways. Eventually, the successful transformation gave the whole family <span class='highlighted-idiom'>a new lease on life</span>."
+                },
+                activities: [
+                    "Discuss changes you've had to adapt to in your life",
+                    "Share examples of businesses or people who adapted successfully",
+                    "Talk about times when you changed your opinion about something",
+                    "Create adaptation strategies for different challenging situations"
+                ],
+                sentencePractice: [
+                    {
+                        prompt: "Use 'go with the flow' for accepting changes:",
+                        example: "The meeting time changed again, but I'll just _____ and adjust my schedule."
+                    },
+                    {
+                        prompt: "Use 'roll with the punches' for handling difficulties:",
+                        example: "Starting a new job is challenging, but I'm learning to _____."
+                    },
+                    {
+                        prompt: "Use 'move with the times' for adapting to modern ways:",
+                        example: "My grandfather finally got a smartphone - he's learning to _____."
+                    }
+                ]
+            },
+            {
+                number: 24,
+                level: 2,
+                title: "Risk and Caution",
+                idioms: [
+                    {
+                        idiom: "Play it safe",
+                        meaning: "Avoid risks, choose the safer option",
+                        example: "I could invest in stocks, but I'd rather play it safe and keep my money in the bank."
+                    },
+                    {
+                        idiom: "Stick your neck out",
+                        meaning: "Take a risk to help someone or do something",
+                        example: "My boss stuck her neck out and recommended me for the promotion."
+                    },
+                    {
+                        idiom: "Test the waters",
+                        meaning: "Try something carefully before committing fully",
+                        example: "Before opening a restaurant, she decided to test the waters with a food truck."
+                    },
+                    {
+                        idiom: "Throw caution to the wind",
+                        meaning: "Stop being careful and take a big risk",
+                        example: "I usually save money, but I threw caution to the wind and bought the expensive concert tickets."
+                    },
+                    {
+                        idiom: "Better safe than sorry",
+                        meaning: "It's better to be careful than to regret taking risks",
+                        example: "I'll bring an umbrella even though it might not rain - better safe than sorry."
+                    }
+                ],
+                readingActivity: {
+                    title: "The Investment Decision",
+                    text: "David had saved money for years and was considering different investment options. His financial advisor suggested he <span class='highlighted-idiom'>test the waters</span> with a small investment before committing all his savings. David's friend encouraged him to invest in a risky startup, saying he should <span class='highlighted-idiom'>throw caution to the wind</span> and take a big chance. However, David preferred to <span class='highlighted-idiom'>play it safe</span> and choose more stable investments. His advisor was willing to <span class='highlighted-idiom'>stick her neck out</span> and recommend a moderate-risk portfolio that balanced growth with security. In the end, David decided that when it came to his life savings, it was <span class='highlighted-idiom'>better safe than sorry</span>."
+                },
+                activities: [
+                    "Discuss risks you've taken and their outcomes",
+                    "Share examples of when being cautious was the right choice",
+                    "Talk about situations where taking risks paid off",
+                    "Create risk assessment scenarios using these idioms"
+                ],
+                sentencePractice: [
+                    {
+                        prompt: "Use 'play it safe' for choosing the safer option:",
+                        example: "I could drive in this storm, but I'd rather _____ and wait."
+                    },
+                    {
+                        prompt: "Use 'test the waters' for trying something carefully:",
+                        example: "Before quitting my job to freelance, I want to _____ with some part-time projects."
+                    },
+                    {
+                        prompt: "Use 'better safe than sorry' for being cautious:",
+                        example: "I'll double-check my homework before submitting it - _____."
+                    }
+                ]
+            },
+            {
+                number: 25,
+                level: 2,
+                title: "Competition and Comparison",
+                idioms: [
+                    {
+                        idiom: "Ahead of the game",
+                        meaning: "In a better position than others, more advanced",
+                        example: "By studying during summer break, she's ahead of the game for next semester."
+                    },
+                    {
+                        idiom: "Behind the times",
+                        meaning: "Old-fashioned, not keeping up with modern developments",
+                        example: "My grandfather is behind the times - he still doesn't use email."
+                    },
+                    {
+                        idiom: "Keep up with the Joneses",
+                        meaning: "Try to have the same lifestyle as your neighbors or peers",
+                        example: "They bought an expensive car just to keep up with the Joneses."
+                    },
+                    {
+                        idiom: "Level playing field",
+                        meaning: "A fair situation where everyone has equal opportunities",
+                        example: "The new rules create a level playing field for all students."
+                    },
+                    {
+                        idiom: "Run circles around",
+                        meaning: "Be much better than someone at something",
+                        example: "She's so good at math, she can run circles around the other students."
+                    }
+                ],
+                readingActivity: {
+                    title: "The Technology Competition",
+                    text: "TechStart High School was known for its advanced computer science program. The school made sure to create a <span class='highlighted-idiom'>level playing field</span> by providing all students with the same equipment and resources. Maria was <span class='highlighted-idiom'>ahead of the game</span> because she had been coding since elementary school and could <span class='highlighted-idiom'>run circles around</span> most of her classmates. However, some students felt pressure to <span class='highlighted-idiom'>keep up with the Joneses</span> and buy expensive personal computers they couldn't afford. Mr. Thompson, the older math teacher, admitted he was <span class='highlighted-idiom'>behind the times</span> when it came to new programming languages, so he took evening classes to update his skills."
+                },
+                activities: [
+                    "Compare your skills with others in different areas",
+                    "Discuss the pressure to compete with peers",
+                    "Share examples of fair and unfair competition",
+                    "Talk about areas where you're ahead or behind others"
+                ],
+                sentencePractice: [
+                    {
+                        prompt: "Use 'ahead of the game' for being in a better position:",
+                        example: "By reading next week's chapters early, I'm _____ in my studies."
+                    },
+                    {
+                        prompt: "Use 'run circles around' for being much better:",
+                        example: "My sister is so athletic, she can _____ me in any sport."
+                    },
+                    {
+                        prompt: "Use 'keep up with the Joneses' for trying to match others:",
+                        example: "We don't need a bigger house - we're just trying to _____."
+                    }
+                ]
+            },
+            {
+                number: 26,
+                level: 2,
+                title: "Patience and Persistence",
+                idioms: [
+                    {
+                        idiom: "Hang in there",
+                        meaning: "Don't give up, keep trying despite difficulties",
+                        example: "I know the job search is frustrating, but hang in there - you'll find something."
+                    },
+                    {
+                        idiom: "Stick to your guns",
+                        meaning: "Maintain your position or opinion despite pressure",
+                        example: "Everyone disagreed with my idea, but I stuck to my guns and it worked out."
+                    },
+                    {
+                        idiom: "Slow and steady wins the race",
+                        meaning: "Consistent effort is better than rushing",
+                        example: "I study a little every day instead of cramming - slow and steady wins the race."
+                    },
+                    {
+                        idiom: "Don't throw in the towel",
+                        meaning: "Don't give up or quit",
+                        example: "The business is struggling, but don't throw in the towel yet - things might improve."
+                    },
+                    {
+                        idiom: "Keep your eye on the prize",
+                        meaning: "Stay focused on your goal",
+                        example: "Training for the marathon is hard, but keep your eye on the prize."
+                    }
+                ],
+                readingActivity: {
+                    title: "The Marathon Training",
+                    text: "Lisa decided to train for her first marathon, even though she had never been a serious runner. Her friends thought she was crazy, but Lisa decided to <span class='highlighted-idiom'>stick to her guns</span> and pursue her goal. The training was much harder than she expected, and there were days when she wanted to <span class='highlighted-idiom'>throw in the towel</span>. Her coach reminded her that Rome wasn't built in a day and that building endurance takes months of consistent work. Lisa adopted a <span class='highlighted-idiom'>slow and steady wins the race</span> approach, gradually increasing her distance each week. When she felt discouraged during difficult training runs, her running group would encourage her to <span class='highlighted-idiom'>hang in there</span> and <span class='highlighted-idiom'>keep her eye on the prize</span>."
+                },
+                activities: [
+                    "Share goals that require long-term persistence",
+                    "Discuss times when you wanted to give up but didn't",
+                    "Talk about the benefits of consistent effort over rushing",
+                    "Create motivational messages using these idioms"
+                ],
+                sentencePractice: [
+                    {
+                        prompt: "Use 'hang in there' to encourage someone:",
+                        example: "I know college is stressful, but _____ - you're almost done!"
+                    },
+                    {
+                        prompt: "Use 'stick to your guns' for maintaining your position:",
+                        example: "Everyone said my business idea wouldn't work, but I _____ and proved them wrong."
+                    },
+                    {
+                        prompt: "Use 'don't throw in the towel' for not giving up:",
+                        example: "The project is challenging, but _____ - we can figure it out."
+                    }
+                ]
+            },
+            {
+                number: 27,
+                level: 2,
+                title: "Truth and Honesty",
+                idioms: [
+                    {
+                        idiom: "Call a spade a spade",
+                        meaning: "Speak honestly and directly about something",
+                        example: "Let me call a spade a spade - your presentation needs a lot of work."
+                    },
+                    {
+                        idiom: "Come clean",
+                        meaning: "Tell the truth about something you've been hiding",
+                        example: "I finally came clean and told my parents I failed the test."
+                    },
+                    {
+                        idiom: "Straight from the horse's mouth",
+                        meaning: "Information from the original or most reliable source",
+                        example: "I heard about the promotion straight from the horse's mouth - the boss told me directly."
+                    },
+                    {
+                        idiom: "Take it with a grain of salt",
+                        meaning: "Don't completely believe something, be skeptical",
+                        example: "He tends to exaggerate, so take his stories with a grain of salt."
+                    },
+                    {
+                        idiom: "The whole nine yards",
+                        meaning: "Everything, the complete amount or treatment",
+                        example: "For the wedding, they want the whole nine yards - flowers, music, fancy food, everything."
+                    }
+                ],
+                readingActivity: {
+                    title: "The Rumor Mill",
+                    text: "At Jefferson High School, rumors spread quickly through the hallways. When students heard that the principal was leaving, Sarah wanted to know if it was true. Her friend Jake said he heard it from someone who heard it from someone else, but Sarah told him to <span class='highlighted-idiom'>take it with a grain of salt</span> since it was third-hand information. Later, Sarah got the news <span class='highlighted-idiom'>straight from the horse's mouth</span> when the principal announced it during assembly. When the school newspaper interviewed students about the principal's departure, the editor decided to <span class='highlighted-idiom'>call a spade a spade</span> and write honestly about both the positive and negative aspects of his leadership. One student who had been spreading false rumors finally decided to <span class='highlighted-idiom'>come clean</span> and admit he had made up some of the stories. The newspaper article covered <span class='highlighted-idiom'>the whole nine yards</span> - interviews, statistics, and future plans for the school."
+                },
+                activities: [
+                    "Practice distinguishing reliable from unreliable information",
+                    "Discuss the importance of honesty in relationships",
+                    "Share experiences about rumors and how to handle them",
+                    "Role-play situations requiring honest communication"
+                ],
+                sentencePractice: [
+                    {
+                        prompt: "Use 'come clean' for telling the truth:",
+                        example: "I couldn't keep lying to my friend, so I decided to _____ about what happened."
+                    },
+                    {
+                        prompt: "Use 'straight from the horse's mouth' for reliable information:",
+                        example: "I know the concert is canceled because I heard it _____ from the band's manager."
+                    },
+                    {
+                        prompt: "Use 'take it with a grain of salt' for being skeptical:",
+                        example: "My brother said he saw a celebrity at the mall, but I _____ because he lies sometimes."
+                    }
+                ]
+            },
+            {
+                number: 28,
+                level: 2,
+                title: "Learning and Understanding",
+                idioms: [
+                    {
+                        idiom: "Get the hang of it",
+                        meaning: "Learn how to do something well",
+                        example: "Driving was difficult at first, but I'm getting the hang of it."
+                    },
+                    {
+                        idiom: "It's not rocket science",
+                        meaning: "It's not very difficult to understand or do",
+                        example: "Using this app is easy - it's not rocket science."
+                    },
+                    {
+                        idiom: "Pick someone's brain",
+                        meaning: "Ask someone for advice or information",
+                        example: "Can I pick your brain about college applications? You know so much about them."
+                    },
+                    {
+                        idiom: "Wrap your head around",
+                        meaning: "Understand something difficult or complex",
+                        example: "I can't wrap my head around these math problems - they're so confusing."
+                    },
+                    {
+                        idiom: "Connect the dots",
+                        meaning: "Understand how different pieces of information relate to each other",
+                        example: "After studying all the evidence, the detective was able to connect the dots and solve the case."
+                    }
+                ],
+                readingActivity: {
+                    title: "The New Intern",
+                    text: "Alex started his internship at a marketing company and was eager to learn the ropes quickly. His supervisor assured him that most of the daily tasks weren't too complicated - '<span class='highlighted-idiom'>It's not rocket science</span>,' she said with a smile. However, Alex struggled to <span class='highlighted-idiom'>wrap his head around</span> the company's complex project management system. He decided to <span class='highlighted-idiom'>pick his supervisor's brain</span> during lunch to get some tips and clarification. After a few weeks of practice and guidance, Alex began to <span class='highlighted-idiom'>get the hang of it</span> and felt much more confident in his abilities. By the end of his internship, he could <span class='highlighted-idiom'>connect the dots</span> between different projects and understand how they all worked together."
+                },
+                activities: [
+                    "Share experiences about learning new skills",
+                    "Discuss what makes some things easy or difficult to learn",
+                    "Practice asking for help and advice appropriately",
+                    "Talk about complex topics you've had to understand"
+                ],
+                sentencePractice: [
+                    {
+                        prompt: "Use 'get the hang of it' for learning a skill:",
+                        example: "Playing guitar was hard at first, but I'm starting to _____."
+                    },
+                    {
+                        prompt: "Use 'it's not rocket science' for something simple:",
+                        example: "Making a sandwich is easy - _____."
+                    },
+                    {
+                        prompt: "Use 'pick someone's brain' for asking for advice:",
+                        example: "You're great at photography. Can I _____ about camera settings?"
+                    }
+                ]
+            },
+            {
+                number: 29,
+                level: 2,
+                title: "Emotions and Reactions",
+                idioms: [
+                    {
+                        idiom: "Blow your top",
+                        meaning: "Become very angry suddenly",
+                        example: "When he saw the mess in the kitchen, he blew his top."
+                    },
+                    {
+                        idiom: "Keep your cool",
+                        meaning: "Stay calm in a difficult situation",
+                        example: "Even when the customer was rude, she kept her cool and remained professional."
+                    },
+                    {
+                        idiom: "Jump for joy",
+                        meaning: "Be extremely happy and excited",
+                        example: "When she got accepted to Harvard, she jumped for joy."
+                    },
+                    {
+                        idiom: "Have mixed feelings",
+                        meaning: "Feel both positive and negative emotions about something",
+                        example: "I have mixed feelings about moving to a new city - excited but also nervous."
+                    },
+                    {
+                        idiom: "Wear your heart on your sleeve",
+                        meaning: "Show your emotions openly",
+                        example: "She wears her heart on her sleeve - you always know how she's feeling."
+                    }
+                ],
+                readingActivity: {
+                    title: "The Job Interview",
+                    text: "Maria had <span class='highlighted-idiom'>mixed feelings</span> about her upcoming job interview - she was excited about the opportunity but nervous about the competition. She tends to <span class='highlighted-idiom'>wear her heart on her sleeve</span>, so everyone could see how anxious she was. Her brother gave her advice: 'Remember to <span class='highlighted-idiom'>keep your cool</span> during the interview, even if they ask difficult questions.' Maria's father, who usually <span class='highlighted-idiom'>blows his top</span> when he's stressed, surprised everyone by staying calm and supportive. When Maria called to say she got the job, the whole family <span class='highlighted-idiom'>jumped for joy</span> and celebrated her success."
+                },
+                activities: [
+                    "Discuss different ways people express emotions",
+                    "Practice staying calm in stressful situations",
+                    "Share experiences about mixed feelings in important decisions",
+                    "Role-play emotional situations using these idioms"
+                ],
+                sentencePractice: [
+                    {
+                        prompt: "Use 'keep your cool' for staying calm:",
+                        example: "During the emergency, the nurse _____ and helped everyone stay safe."
+                    },
+                    {
+                        prompt: "Use 'jump for joy' for being extremely happy:",
+                        example: "When I won the lottery, I _____!"
+                    },
+                    {
+                        prompt: "Use 'have mixed feelings' for conflicted emotions:",
+                        example: "I _____ about graduating - happy to finish but sad to leave my friends."
+                    }
+                ]
+            },
+            {
+                number: 30,
+                level: 2,
+                title: "Celebration and Achievement",
+                idioms: [
+                    {
+                        idiom: "Pat yourself on the back",
+                        meaning: "Be proud of your achievement, congratulate yourself",
+                        example: "You finished the marathon - you should pat yourself on the back!"
+                    },
+                    {
+                        idiom: "Living it up",
+                        meaning: "Enjoying life to the fullest, having a great time",
+                        example: "After graduation, we spent the summer living it up at the beach."
+                    },
+                    {
+                        idiom: "Paint the town red",
+                        meaning: "Go out and celebrate enthusiastically",
+                        example: "It's my birthday tomorrow - let's paint the town red!"
+                    },
+                    {
+                        idiom: "Steal the show",
+                        meaning: "Be the most impressive or get the most attention",
+                        example: "The young singer stole the show with her amazing performance."
+                    },
+                    {
+                        idiom: "Make a splash",
+                        meaning: "Create a big impression or get a lot of attention",
+                        example: "The new restaurant made a splash with its unique menu and great service."
+                    }
+                ],
+                readingActivity: {
+                    title: "Graduation Day",
+                    text: "After four years of hard work, the graduating class of Lincoln High was ready to celebrate. Valedictorian Sarah felt on top of the world as she prepared to give her speech to the packed auditorium. During the ceremony, the school's jazz band performed, but it was the surprise solo by senior Mike that <span class='highlighted-idiom'>stole the show</span> and earned a standing ovation. After the formal ceremony ended, Sarah's parents told her she should <span class='highlighted-idiom'>pat herself on the back</span> for all her academic achievements. That evening, the graduates planned to <span class='highlighted-idiom'>paint the town red</span> with a celebration at the local restaurant. The graduation party <span class='highlighted-idiom'>made a splash</span> in the community, and for the next few weeks, before starting college, Sarah and her friends planned on <span class='highlighted-idiom'>living it up</span> and enjoying their freedom."
+                },
+                activities: [
+                    "Share your proudest achievements and how you celebrated",
+                    "Discuss different ways people celebrate success",
+                    "Talk about performances or events where someone stole the show",
+                    "Plan imaginary celebrations using these idioms"
+                ],
+                sentencePractice: [
+                    {
+                        prompt: "Use 'pat yourself on the back' for being proud:",
+                        example: "You worked so hard on this project - you should _____."
+                    },
+                    {
+                        prompt: "Use 'steal the show' for being the most impressive:",
+                        example: "The little girl's dance performance _____ at the talent show."
+                    },
+                    {
+                        prompt: "Use 'make a splash' for creating a big impression:",
+                        example: "The new student _____ by winning the science fair in her first week."
+                    }
+                ]
+            }
+        ];
+
+        // Timer functionality
+        let timerInterval;
+        let timeLeft = 25 * 60; // 25 minutes in seconds
+        let isRunning = false;
+
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const remainingSeconds = seconds % 60;
+            return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+        }
+
+        function updateTimerDisplay() {
+            const display = document.getElementById('timerDisplay');
+            if (display) {
+                display.textContent = formatTime(timeLeft);
+            }
+        }
+
+        function startTimer() {
+            if (!isRunning) {
+                isRunning = true;
+                timerInterval = setInterval(() => {
+                    timeLeft--;
+                    updateTimerDisplay();
+                    if (timeLeft <= 0) {
+                        clearInterval(timerInterval);
+                        isRunning = false;
+                        alert('⏰ Time\'s up! Great job completing this lesson!');
+                        timeLeft = 25 * 60;
+                        updateTimerDisplay();
+                    }
+                }, 1000);
+            }
+        }
+
+        function pauseTimer() {
+            if (isRunning) {
+                clearInterval(timerInterval);
+                isRunning = false;
+            }
+        }
+
+        function resetTimer() {
+            clearInterval(timerInterval);
+            isRunning = false;
+            timeLeft = 25 * 60;
+            updateTimerDisplay();
+        }
+
+        // Generate curriculum
+        function generateCurriculum() {
+            const level1Container = document.getElementById('level1Lessons');
+            const level2Container = document.getElementById('level2Lessons');
+            
+            const level1Lessons = lessons.filter(lesson => lesson.level === 1);
+            const level2Lessons = lessons.filter(lesson => lesson.level === 2);
+            
+            // Generate Level 1 lessons
+            level1Lessons.forEach(lesson => {
+                const lessonCard = document.createElement('div');
+                lessonCard.className = 'lesson-card';
+                lessonCard.onclick = () => showLesson(lesson.number);
+                
+                lessonCard.innerHTML = `
+                    <div class="lesson-number">${lesson.number}</div>
+                    <div class="lesson-title">${lesson.title}</div>
+                    <div class="lesson-preview">${lesson.idioms.slice(0, 3).map(idiom => idiom.idiom).join(' • ')}</div>
+                    <div class="lesson-duration">⏱️ 25 minutes</div>
+                `;
+                
+                level1Container.appendChild(lessonCard);
+            });
+            
+            // Generate Level 2 lessons
+            level2Lessons.forEach(lesson => {
+                const lessonCard = document.createElement('div');
+                lessonCard.className = 'lesson-card';
+                lessonCard.onclick = () => showLesson(lesson.number);
+                
+                lessonCard.innerHTML = `
+                    <div class="lesson-number">${lesson.number}</div>
+                    <div class="lesson-title">${lesson.title}</div>
+                    <div class="lesson-preview">${lesson.idioms.slice(0, 3).map(idiom => idiom.idiom).join(' • ')}</div>
+                    <div class="lesson-duration">⏱️ 25 minutes</div>
+                `;
+                
+                level2Container.appendChild(lessonCard);
+            });
+        }
+
+        // Show individual lesson
+        function showLesson(lessonNumber) {
+            const lesson = lessons.find(l => l.number === lessonNumber);
+            if (!lesson) return;
+
+            const curriculumGrid = document.getElementById('curriculumGrid');
+            const lessonPage = document.getElementById('lessonPage');
+            
+            curriculumGrid.style.display = 'none';
+            lessonPage.style.display = 'block';
+            
+            // Reset timer
+            resetTimer();
+            
+            lessonPage.innerHTML = `
+                <div class="lesson-header">
+                    <div class="lesson-info">
+                        <h2>Lesson ${lesson.number}: ${lesson.title}</h2>
+                        <p>Level ${lesson.level} • 5 Idioms • Interactive Activities</p>
+                    </div>
+                    <button class="back-btn" onclick="showCurriculum()">← Back to Curriculum</button>
+                </div>
+
+                <div class="timer-section">
+                    <div class="timer-display" id="timerDisplay">25:00</div>
+                    <div class="timer-controls">
+                        <button class="timer-btn" onclick="startTimer()">▶️ Start</button>
+                        <button class="timer-btn" onclick="pauseTimer()">⏸️ Pause</button>
+                        <button class="timer-btn" onclick="resetTimer()">🔄 Reset</button>
+                    </div>
+                    <p>Perfect 25-minute lesson timer</p>
+                </div>
+
+                <div class="lesson-section">
+                    <h3 class="section-title">📚 Today's Idioms</h3>
+                    ${lesson.idioms.map(idiom => `
+                        <div class="idiom-card">
+                            <div class="idiom-title">"${idiom.idiom}"</div>
+                            <div class="idiom-meaning"><strong>Meaning:</strong> ${idiom.meaning}</div>
+                            <div class="idiom-example"><strong>Example:</strong> ${idiom.example}</div>
+                        </div>
+                    `).join('')}
+                </div>
+
+                <div class="lesson-section">
+                    <h3 class="section-title">📖 Reading Activity</h3>
+                    <div class="reading-activity">
+                        <h4>${lesson.readingActivity.title}</h4>
+                        <div class="reading-text">${lesson.readingActivity.text}</div>
+                        <p><strong>Instructions:</strong> Read the story above and identify the highlighted idioms. Discuss how each idiom is used in context.</p>
+                    </div>
+                </div>
+
+                <div class="lesson-section">
+                    <h3 class="section-title">🎯 Practice Activities</h3>
+                    <div class="activity-box">
+                        <ul class="activity-list">
+                            ${lesson.activities.map(activity => `<li>${activity}</li>`).join('')}
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="lesson-section">
+                    <h3 class="section-title">✍️ Sentence Practice</h3>
+                    <div class="sentence-practice">
+                        ${lesson.sentencePractice.map(practice => `
+                            <div class="practice-item">
+                                <div class="practice-prompt">${practice.prompt}</div>
+                                <div><strong>Example:</strong> ${practice.example}</div>
+                            </div>
+                        `).join('')}
+                        <p><strong>Your Turn:</strong> Create your own sentences using each of today's idioms. Share them with a partner or write them in your notebook!</p>
+                    </div>
+                </div>
+            `;
+            
+            updateTimerDisplay();
+        }
+
+        // Show curriculum overview
+        function showCurriculum() {
+            const curriculumGrid = document.getElementById('curriculumGrid');
+            const lessonPage = document.getElementById('lessonPage');
+            
+            curriculumGrid.style.display = 'block';
+            lessonPage.style.display = 'none';
+            
+            // Stop timer when returning to curriculum
+            pauseTimer();
+        }
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            generateCurriculum();
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9758e8556619fec3',t:'MTc1NjI2OTgwMi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
